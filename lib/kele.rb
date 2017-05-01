@@ -20,6 +20,17 @@ class Kele
     response = self.class.get(api_url("mentors/#{mentor_id}/student_availability"), headers: { "authorization" => @auth_token })
     @mentor_availability = JSON.parse(response.body)
   end
+
+  def get_messages(page)
+    response = self.class.get(base_api_endpoint("message_threads?page=#{page}"), headers: { "authorization" => @auth_token })
+    @get_messages = JSON.parse(response.body)
+  end
+
+  def create_message(recipient_id, subject, message)
+    response = self.class.post(base_api_endpoint("messages"), body: { "user_id": id, "recipient_id": recipient_id, "subject": subject, "stripped-text": message }, headers: { "authorization" => @auth_token })
+    puts response
+  end
+
   
   private
 
