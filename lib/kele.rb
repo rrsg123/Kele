@@ -1,8 +1,10 @@
 require 'httparty'
 require 'json'
+require 'lib/kele/roadmap.rb'
 
 class Kele
   include HTTParty
+  include Roadmap
   def initialize(email, password)
     response = self.class.post(api_url("sessions"), body: {"email": email, "password": password})
     raise "Invalid email or password" if response.code == 404
@@ -18,7 +20,7 @@ class Kele
     response = self.class.get(api_url("mentors/#{mentor_id}/student_availability"), headers: { "authorization" => @auth_token })
     @mentor_availability = JSON.parse(response.body)
   end
-
+  
   private
 
   def api_url(endpoint)
